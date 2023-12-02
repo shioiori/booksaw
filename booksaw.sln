@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "booksaw.api", "C:\Users\Admin\Downloads\temp\booksaw.api\booksaw.api.csproj", "{22D494FA-BAC9-4D4C-ABC6-20C29E9ABE98}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "booksaw.application", "C:\Users\Admin\Downloads\temp\booksaw-api.application\booksaw.application.csproj", "{B58DD353-164B-48EC-9C7C-07A0B6877788}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "booksaw.domain", "C:\Users\Admin\Downloads\temp\booksaw-api.domain\booksaw.domain.csproj", "{20520833-FFF2-4E2F-872C-55809453A304}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "booksaw.infrastructure", "C:\Users\Admin\Downloads\temp\booksaw-api.infrastructure\booksaw.infrastructure.csproj", "{2E2AC800-E66A-4C36-B0AD-EA86CA180D9F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22D494FA-BAC9-4D4C-ABC6-20C29E9ABE98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22D494FA-BAC9-4D4C-ABC6-20C29E9ABE98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22D494FA-BAC9-4D4C-ABC6-20C29E9ABE98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22D494FA-BAC9-4D4C-ABC6-20C29E9ABE98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B58DD353-164B-48EC-9C7C-07A0B6877788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B58DD353-164B-48EC-9C7C-07A0B6877788}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B58DD353-164B-48EC-9C7C-07A0B6877788}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B58DD353-164B-48EC-9C7C-07A0B6877788}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20520833-FFF2-4E2F-872C-55809453A304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20520833-FFF2-4E2F-872C-55809453A304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20520833-FFF2-4E2F-872C-55809453A304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20520833-FFF2-4E2F-872C-55809453A304}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E2AC800-E66A-4C36-B0AD-EA86CA180D9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E2AC800-E66A-4C36-B0AD-EA86CA180D9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E2AC800-E66A-4C36-B0AD-EA86CA180D9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E2AC800-E66A-4C36-B0AD-EA86CA180D9F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
