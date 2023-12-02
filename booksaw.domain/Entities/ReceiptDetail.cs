@@ -1,14 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace booksaw_api.domain.Entities
+namespace booksaw.domain.Entities
 {
-    public class ReceiptDetail : BaseEntity
+    [Table("receipt_details")]
+    public class ReceiptDetail
     {
+        [Column("id")]
+        public int Id { get; set; }
+        [Column("receipt_id")]
+        public int ReceiptId { get; set; }
+        [Column("book_id")]
         public int BookId { get; set; }
-        public decimal Price { get; set; }
+        [Column("quantity")]
+        public int Quantity { get; set; }
+        [Column("price")]
+        public decimal UnitPrice { get; set; }
+        [Column("total_price")]
+        public decimal TotalPrice { 
+            get {  return UnitPrice * Quantity; } 
+            set {  UnitPrice = value; }
+        }
+        public virtual Receipt Receipt { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace booksaw_api.application.Mapper
+namespace booksaw.application.Mapper
 {
     public class CustomMapper
     {

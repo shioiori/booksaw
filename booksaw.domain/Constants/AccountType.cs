@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace booksaw_api.domain.Constants
+namespace booksaw.domain.Constants
 {
-    public class AccountType
+    public static class AccountType
     {
         public const string Supplier = "Supplier";
         public const string Staff = "Staff";

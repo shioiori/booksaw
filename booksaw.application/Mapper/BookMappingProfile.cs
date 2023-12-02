@@ -1,20 +1,23 @@
 ﻿using AutoMapper;
-using booksaw_api.application.Commands.Book;
-using booksaw_api.application.Responses;
+using booksaw.application.Books.CreateBook;
+using booksaw.application.Books.UpdateBook;
+using booksaw.application.Response;
+using booksaw.domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace booksaw_api.application.Mapper
+namespace booksaw.application.Mapper
 {
     public class BookMappingProfile : Profile
     {
-        public BookMappingProfile() { 
+        public BookMappingProfile()
+        {
             CreateMap<Book, BookResponse>().ReverseMap();
             CreateMap<Book, CreateBookCommand>().ReverseMap();
-            CreateMap<Book, EditBookCommand>().ReverseMap();
+            CreateMap<Book, UpdateBookCommand>().ReverseMap();
         }
     }
 }
