@@ -1,4 +1,6 @@
-﻿using System;
+﻿using booksaw.application.Response;
+using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace booksaw.application.Books.GetBookByCategory
 {
-    internal class GetBookByCategoryQuery
+    public class GetBookByCategoryQuery : IRequest<List<BookResponse>>
     {
+        public int CategoryId { get; set; }
     }
 }

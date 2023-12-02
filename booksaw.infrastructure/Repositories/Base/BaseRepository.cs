@@ -17,7 +17,7 @@ namespace booksaw.infrastructure.Repositories.Base
         public BaseRepository(DbConnector dbConnection)
         {
             _connection = dbConnection.CreateConnection();
-            _transaction = _connection.BeginTransaction();
+            //_transaction = _connection.BeginTransaction();
         }
         public int Commit()
         {

@@ -18,7 +18,7 @@ namespace booksaw.infrastructure.Data
         }
         public IDbConnection CreateConnection()
         {
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            string connectionString = _configuration.GetConnectionString("BooksawDB");
             return new MySqlConnection(connectionString);
         }
     }

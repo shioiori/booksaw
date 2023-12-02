@@ -21,7 +21,7 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = "SELECT * FROM books";
+                var query = @"SELECT * FROM books";
                 return (await _connection.QueryAsync<Book>(query)).ToList();
             }
             catch (Exception ex)
@@ -89,10 +89,11 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = @"INSERT INTO books (name, author_id, publisher_id, description, price, image_url, page_number) 
-                            OUTPUT INSERTED.*
-                            VALUES (@Name, @AuthorId, @Description, @Price, @ImageUrl, @PageNumber)";
-                return (await _connection.QuerySingleAsync<Book>(query, entity));
+                var query = @"INSERT INTO books (name, author_id, publisher_id, description, import_price, sold_price, image_url, page) 
+                            VALUES (@Name, @AuthorId, @PublisherId, @Description, @ImportPrice, @SoldPrice, @ImageUrl, @Page);
+                            SELECT LAST_INSERT_ID()";
+                var id = await _connection.QueryFirstAsync<int>(query, entity);
+                return await GetByIdAsync(id);
             }
             catch (Exception ex)
             {
@@ -105,7 +106,8 @@ namespace booksaw.infrastructure.Repositories
             try
             {
                 var query = @"UPDATE books SET name = @Name, author_id = @AuthorId, publisher_id = @PublisherId, 
-                            description = @Description, price = @price, image_url = @ImageUrl, page_number = @PageNumber 
+                            description = @Description, import_price = @ImportPrice, sold_price = @SoldPrice,
+                            image_url = @ImageUrl, page_number = @PageNumber 
                             WHERE id = @Id";
                 await _connection.ExecuteAsync(query, entity);
             }

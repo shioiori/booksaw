@@ -14,8 +14,9 @@ namespace booksaw.application.Books.CreateBook
         public int AuthorId { get; set; }
         public int PublisherId { get; set; }
         public string Description { get; set; }
-        public decimal Price { get; set; }
+        public decimal ImportPrice { get; set; }
+        public decimal SoldPrice { get; set; }
         public string ImageUrl { get; set; }
-        public int PageNumber { get; set; }
+        public int Page { get; set; }
     }
 }

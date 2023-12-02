@@ -11,9 +11,5 @@ namespace booksaw.application.Books.GetBookById
     public class GetBookByIdQuery : IRequest<BookResponse>
     {
         public int Id { get; set; }
-        public GetBookByIdQuery(int id)
-        {
-            Id = id;
-        }
     }
 }
