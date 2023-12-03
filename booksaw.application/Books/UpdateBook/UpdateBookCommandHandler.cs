@@ -24,7 +24,7 @@ namespace booksaw.application.Books.UpdateBook
                 return false;
             }
             var bookEntity = CustomMapper.Mapper.Map<Book>(request);
-
+            _repository.BeginTransaction();
             await _repository.UpdateAsync(bookEntity);
             _repository.Commit();
             return true;

@@ -11,8 +11,8 @@ using booksaw.infrastructure.Data;
 namespace booksaw.infrastructure.Migrations
 {
     [DbContext(typeof(EFContext))]
-    [Migration("20231202121513_init")]
-    partial class init
+    [Migration("20231203074109_alterBook")]
+    partial class alterBook
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -94,6 +94,10 @@ namespace booksaw.infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("author_id");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("category_id");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext")
@@ -106,10 +110,6 @@ namespace booksaw.infrastructure.Migrations
                         .HasDefaultValue("https://i.imgur.com/YJlYDX0.png")
                         .HasColumnName("image_url");
 
-                    b.Property<decimal>("ImportPrice")
-                        .HasColumnType("decimal(65,30)")
-                        .HasColumnName("import_price");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext")
@@ -119,17 +119,19 @@ namespace booksaw.infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("page");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(65,30)")
+                        .HasColumnName("price");
+
                     b.Property<int>("PublisherId")
                         .HasColumnType("int")
                         .HasColumnName("publisher_id");
 
-                    b.Property<decimal>("SoldPrice")
-                        .HasColumnType("decimal(65,30)")
-                        .HasColumnName("sold_price");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("PublisherId");
 
@@ -209,7 +211,7 @@ namespace booksaw.infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 12, 2, 19, 15, 13, 192, DateTimeKind.Local).AddTicks(5075))
+                        .HasDefaultValue(new DateTime(2023, 12, 3, 14, 41, 9, 874, DateTimeKind.Local).AddTicks(4952))
                         .HasColumnName("created_at");
 
                     b.Property<decimal>("TotalPrice")
@@ -227,18 +229,13 @@ namespace booksaw.infrastructure.Migrations
 
             modelBuilder.Entity("booksaw.domain.Entities.OrderDetail", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("OrderId")
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("order_id");
 
                     b.Property<int>("BookId")
                         .HasColumnType("int")
                         .HasColumnName("book_id");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int")
-                        .HasColumnName("order_id");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int")
@@ -252,9 +249,9 @@ namespace booksaw.infrastructure.Migrations
                         .HasColumnType("decimal(65,30)")
                         .HasColumnName("unit_price");
 
-                    b.HasKey("Id");
+                    b.HasKey("OrderId", "BookId");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("BookId");
 
                     b.ToTable("order_details");
                 });
@@ -290,7 +287,7 @@ namespace booksaw.infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 12, 2, 19, 15, 13, 192, DateTimeKind.Local).AddTicks(7249))
+                        .HasDefaultValue(new DateTime(2023, 12, 3, 14, 41, 9, 874, DateTimeKind.Local).AddTicks(8856))
                         .HasColumnName("created_at");
 
                     b.Property<int>("TotalPrice")
@@ -308,10 +305,9 @@ namespace booksaw.infrastructure.Migrations
 
             modelBuilder.Entity("booksaw.domain.Entities.ReceiptDetail", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ReceiptId")
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnName("receipt_id");
 
                     b.Property<int>("BookId")
                         .HasColumnType("int")
@@ -321,10 +317,6 @@ namespace booksaw.infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.Property<int>("ReceiptId")
-                        .HasColumnType("int")
-                        .HasColumnName("receipt_id");
-
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(65,30)")
                         .HasColumnName("total_price");
@@ -333,9 +325,9 @@ namespace booksaw.infrastructure.Migrations
                         .HasColumnType("decimal(65,30)")
                         .HasColumnName("price");
 
-                    b.HasKey("Id");
+                    b.HasKey("ReceiptId", "BookId");
 
-                    b.HasIndex("ReceiptId");
+                    b.HasIndex("BookId");
 
                     b.ToTable("receipt_details");
                 });
@@ -359,6 +351,12 @@ namespace booksaw.infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("booksaw.domain.Entities.Category", "Category")
+                        .WithMany("Books")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("booksaw.domain.Entities.Publisher", "Publisher")
                         .WithMany("Books")
                         .HasForeignKey("PublisherId")
@@ -366,6 +364,8 @@ namespace booksaw.infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Author");
+
+                    b.Navigation("Category");
 
                     b.Navigation("Publisher");
                 });
@@ -394,11 +394,19 @@ namespace booksaw.infrastructure.Migrations
 
             modelBuilder.Entity("booksaw.domain.Entities.OrderDetail", b =>
                 {
+                    b.HasOne("booksaw.domain.Entities.Book", "Book")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("booksaw.domain.Entities.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Book");
 
                     b.Navigation("Order");
                 });
@@ -416,11 +424,19 @@ namespace booksaw.infrastructure.Migrations
 
             modelBuilder.Entity("booksaw.domain.Entities.ReceiptDetail", b =>
                 {
+                    b.HasOne("booksaw.domain.Entities.Book", "Book")
+                        .WithMany("ReceiptDetails")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("booksaw.domain.Entities.Receipt", "Receipt")
                         .WithMany("ReceiptDetails")
                         .HasForeignKey("ReceiptId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Book");
 
                     b.Navigation("Receipt");
                 });
@@ -440,12 +456,21 @@ namespace booksaw.infrastructure.Migrations
             modelBuilder.Entity("booksaw.domain.Entities.Book", b =>
                 {
                     b.Navigation("Clones");
+
+                    b.Navigation("OrderDetails");
+
+                    b.Navigation("ReceiptDetails");
                 });
 
             modelBuilder.Entity("booksaw.domain.Entities.BookClone", b =>
                 {
                     b.Navigation("Account")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("booksaw.domain.Entities.Category", b =>
+                {
+                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("booksaw.domain.Entities.Order", b =>

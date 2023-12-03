@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace booksaw.application.Mapper
 {
-    public class BookMappingProfile : Profile
+    public class BookProfile : Profile
     {
-        public BookMappingProfile()
+        public BookProfile()
         {
             CreateMap<Book, BookResponse>().ReverseMap();
             CreateMap<Book, CreateBookCommand>().ReverseMap();

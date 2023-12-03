@@ -21,9 +21,11 @@ namespace booksaw.application.Books.CreateBook
         public async Task<BookResponse> Handle(CreateBookCommand request, CancellationToken cancellationToken)
         {
             var bookEntity = CustomMapper.Mapper.Map<Book>(request);
+            _repository.BeginTransaction();
             var newBook = await _repository.AddAsync(bookEntity);
-            var customerResponse = CustomMapper.Mapper.Map<BookResponse>(newBook);
-            return customerResponse;
+            var response = CustomMapper.Mapper.Map<BookResponse>(newBook);
+            _repository.Commit();
+            return response;
         }
     }
 }

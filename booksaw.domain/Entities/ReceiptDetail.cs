@@ -10,8 +10,6 @@ namespace booksaw.domain.Entities
     [Table("receipt_details")]
     public class ReceiptDetail
     {
-        [Column("id")]
-        public int Id { get; set; }
         [Column("receipt_id")]
         public int ReceiptId { get; set; }
         [Column("book_id")]
@@ -26,5 +24,6 @@ namespace booksaw.domain.Entities
             set {  UnitPrice = value; }
         }
         public virtual Receipt Receipt { get; set; }
+        public virtual Book Book { get; set; }
     }
 }

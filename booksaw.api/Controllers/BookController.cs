@@ -22,14 +22,14 @@ namespace booksaw.api.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("add")]
+        [HttpPost("")]
         public async Task<IActionResult> CreateAsync([FromBody] CreateBookCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, [FromBody] UpdateBookCommand command)
         {
             if (id != command.Id)
@@ -44,7 +44,7 @@ namespace booksaw.api.Controllers
             return Ok();
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var result = await _mediator.Send(new DeleteBookCommand() { Id = id });

@@ -14,7 +14,10 @@ namespace booksaw.application.Mapper
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
-                cfg.AddProfile<BookMappingProfile>();
+                cfg.AddProfile<BookProfile>();
+                cfg.AddProfile<AuthorProfile>();
+                cfg.AddProfile<CategoryProfile>();
+                cfg.AddProfile<PublisherProfile>();
             });
 
             var mapper = config.CreateMapper();

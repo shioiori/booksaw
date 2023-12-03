@@ -9,7 +9,7 @@ namespace booksaw.domain.Interfaces.Base
 {
     public interface IQueryRepository<T>
     {
-        Task<IReadOnlyList<Book>> GetAllAsync();
-        Task<Book> GetByIdAsync(int id);
+        Task<IReadOnlyList<T>> GetAllAsync();
+        Task<T> GetByIdAsync(int id);
     }
 }

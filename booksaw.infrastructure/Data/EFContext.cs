@@ -50,8 +50,7 @@ namespace booksaw.infrastructure.Data
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired();
-                entity.Property(e => e.ImportPrice).IsRequired();
-                entity.Property(e => e.SoldPrice).IsRequired();
+                entity.Property(e => e.Price).IsRequired();
                 entity.Property(e => e.ImageUrl).HasDefaultValue("https://i.imgur.com/YJlYDX0.png");
                 entity.HasOne(e => e.Author)
                     .WithMany(p => p.Books)
@@ -59,6 +58,9 @@ namespace booksaw.infrastructure.Data
                 entity.HasOne(d => d.Publisher)
                   .WithMany(p => p.Books)
                   .HasForeignKey(e => e.PublisherId);
+                entity.HasOne(d => d.Category)
+                  .WithMany(p => p.Books)
+                  .HasForeignKey(e => e.CategoryId);
             });
             modelBuilder.Entity<BookClone>(entity =>
             {
@@ -90,13 +92,16 @@ namespace booksaw.infrastructure.Data
             });
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.HasKey(e => e.Id);
+                entity.HasKey(e => new { e.OrderId, e.BookId });
                 entity.Property(e => e.Quantity).IsRequired();
                 entity.Property(e => e.UnitPrice).IsRequired();
                 entity.Property(e => e.TotalPrice).IsRequired();
                 entity.HasOne(e => e.Order)
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(e => e.OrderId);
+                entity.HasOne(e => e.Book)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(e => e.BookId);
             });
             modelBuilder.Entity<Publisher>(entity =>
             {
@@ -114,13 +119,16 @@ namespace booksaw.infrastructure.Data
             });
             modelBuilder.Entity<ReceiptDetail>(entity =>
             {
-                entity.HasKey(e => e.Id);
+                entity.HasKey(e => new { e.ReceiptId, e.BookId });
                 entity.Property(e => e.Quantity).IsRequired();
                 entity.Property(e => e.UnitPrice).IsRequired();
                 entity.Property(e => e.TotalPrice).IsRequired();
                 entity.HasOne(e => e.Receipt)
                     .WithMany(p => p.ReceiptDetails)
                     .HasForeignKey(e => e.ReceiptId);
+                entity.HasOne(e => e.Book)
+                    .WithMany(p => p.ReceiptDetails)
+                    .HasForeignKey(e => e.BookId);
             });
         }
     }

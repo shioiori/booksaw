@@ -19,7 +19,7 @@ namespace booksaw.infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -34,7 +34,7 @@ namespace booksaw.infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -49,7 +49,7 @@ namespace booksaw.infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -64,15 +64,16 @@ namespace booksaw.infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "longtext", nullable: false)
+                    name = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     author_id = table.Column<int>(type: "int", nullable: false),
                     publisher_id = table.Column<int>(type: "int", nullable: false),
-                    description = table.Column<string>(type: "longtext", nullable: false)
+                    category_id = table.Column<int>(type: "int", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    import_price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    sold_price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    image_url = table.Column<string>(type: "longtext", nullable: false, defaultValue: "https://i.imgur.com/YJlYDX0.png")
+                    import_price = table.Column<decimal>(type: "decimal(65,4)", nullable: false),
+                    sold_price = table.Column<decimal>(type: "decimal(65,4)", nullable: false),
+                    image_url = table.Column<string>(type: "varchar(255)", nullable: false, defaultValue: "https://i.imgur.com/YJlYDX0.png")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     page = table.Column<int>(type: "int", nullable: false)
                 },
@@ -83,6 +84,12 @@ namespace booksaw.infrastructure.Migrations
                         name: "FK_books_authors_author_id",
                         column: x => x.author_id,
                         principalTable: "authors",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_books_categories_category_id",
+                        column: x => x.category_id,
+                        principalTable: "categories",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -102,9 +109,9 @@ namespace booksaw.infrastructure.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     book_id = table.Column<int>(type: "int", nullable: false),
                     book_index = table.Column<int>(type: "int", nullable: false),
-                    isbn = table.Column<string>(type: "longtext", nullable: false)
+                    isbn = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    is_sold = table.Column<string>(type: "longtext", nullable: false)
+                    is_sold = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     current_page = table.Column<int>(type: "int", nullable: false, defaultValue: 1),
                     account_id = table.Column<int>(type: "int", nullable: false)
@@ -126,17 +133,17 @@ namespace booksaw.infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false),
-                    username = table.Column<string>(type: "longtext", nullable: false)
+                    username = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    password = table.Column<string>(type: "longtext", nullable: false)
+                    password = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    account_type = table.Column<string>(type: "longtext", nullable: false, defaultValue: "Customer")
+                    account_type = table.Column<string>(type: "varchar(100)", nullable: false, defaultValue: "Customer")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    display_name = table.Column<string>(type: "longtext", nullable: false)
+                    display_name = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    email = table.Column<string>(type: "longtext", nullable: false)
+                    email = table.Column<string>(type: "varchar(100)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    avatar = table.Column<string>(type: "longtext", nullable: false, defaultValue: "https://i.imgur.com/su4KGCT.png")
+                    avatar = table.Column<string>(type: "varchar(255)", nullable: false, defaultValue: "https://i.imgur.com/su4KGCT.png")
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -157,9 +164,9 @@ namespace booksaw.infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 12, 2, 19, 15, 13, 192, DateTimeKind.Local).AddTicks(5075)),
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 12, 3, 14, 30, 23, 428, DateTimeKind.Local).AddTicks(8365)),
                     account_id = table.Column<int>(type: "int", nullable: false),
-                    total_price = table.Column<decimal>(type: "decimal(65,30)", nullable: false, defaultValue: 0m)
+                    total_price = table.Column<decimal>(type: "decimal(65,4)", nullable: false, defaultValue: 0m)
                 },
                 constraints: table =>
                 {
@@ -179,7 +186,7 @@ namespace booksaw.infrastructure.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 12, 2, 19, 15, 13, 192, DateTimeKind.Local).AddTicks(7249)),
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(2023, 12, 3, 14, 30, 23, 429, DateTimeKind.Local).AddTicks(1920)),
                     account_id = table.Column<int>(type: "int", nullable: false),
                     total_price = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
@@ -199,17 +206,21 @@ namespace booksaw.infrastructure.Migrations
                 name: "order_details",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     order_id = table.Column<int>(type: "int", nullable: false),
                     book_id = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false),
-                    unit_price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    total_price = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                    unit_price = table.Column<decimal>(type: "decimal(65,4)", nullable: false),
+                    total_price = table.Column<decimal>(type: "decimal(65,4)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_order_details", x => x.id);
+                    table.PrimaryKey("PK_order_details", x => new { x.order_id, x.book_id });
+                    table.ForeignKey(
+                        name: "FK_order_details_books_book_id",
+                        column: x => x.book_id,
+                        principalTable: "books",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_order_details_orders_order_id",
                         column: x => x.order_id,
@@ -223,17 +234,21 @@ namespace booksaw.infrastructure.Migrations
                 name: "receipt_details",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     receipt_id = table.Column<int>(type: "int", nullable: false),
                     book_id = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false),
-                    price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    total_price = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
+                    price = table.Column<decimal>(type: "decimal(65,4)", nullable: false),
+                    total_price = table.Column<decimal>(type: "decimal(65,4)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_receipt_details", x => x.id);
+                    table.PrimaryKey("PK_receipt_details", x => new { x.receipt_id, x.book_id });
+                    table.ForeignKey(
+                        name: "FK_receipt_details_books_book_id",
+                        column: x => x.book_id,
+                        principalTable: "books",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_receipt_details_receipts_receipt_id",
                         column: x => x.receipt_id,
@@ -254,14 +269,19 @@ namespace booksaw.infrastructure.Migrations
                 column: "author_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_books_category_id",
+                table: "books",
+                column: "category_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_books_publisher_id",
                 table: "books",
                 column: "publisher_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_order_details_order_id",
+                name: "IX_order_details_book_id",
                 table: "order_details",
-                column: "order_id");
+                column: "book_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_orders_account_id",
@@ -269,9 +289,9 @@ namespace booksaw.infrastructure.Migrations
                 column: "account_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_receipt_details_receipt_id",
+                name: "IX_receipt_details_book_id",
                 table: "receipt_details",
-                column: "receipt_id");
+                column: "book_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_receipts_account_id",
@@ -281,9 +301,6 @@ namespace booksaw.infrastructure.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "categories");
-
             migrationBuilder.DropTable(
                 name: "order_details");
 
@@ -307,6 +324,9 @@ namespace booksaw.infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "authors");
+
+            migrationBuilder.DropTable(
+                name: "categories");
 
             migrationBuilder.DropTable(
                 name: "publishers");

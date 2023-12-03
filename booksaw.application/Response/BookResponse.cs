@@ -9,11 +9,12 @@ namespace booksaw.application.Response
     public class BookResponse
     {
         public string Name { get; set; }
-        public int AuthorId { get; set; }
-        public int PublisherId { get; set; }
+        public AuthorResponse Author { get; set; }
+        public PublisherResponse Publisher { get; set; }
+        public CategoryResponse Category { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string ImageUrl { get; set; }
-        public int PageNumber { get; set; }
+        public int Page { get; set; }
     }
 }

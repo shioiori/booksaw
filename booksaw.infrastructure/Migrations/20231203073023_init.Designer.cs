@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using booksaw.infrastructure.Data;
 
@@ -10,9 +11,10 @@ using booksaw.infrastructure.Data;
 namespace booksaw.infrastructure.Migrations
 {
     [DbContext(typeof(EFContext))]
-    partial class EFContextModelSnapshot : ModelSnapshot
+    [Migration("20231203073023_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,6 +110,10 @@ namespace booksaw.infrastructure.Migrations
                         .HasDefaultValue("https://i.imgur.com/YJlYDX0.png")
                         .HasColumnName("image_url");
 
+                    b.Property<decimal>("ImportPrice")
+                        .HasColumnType("decimal(65,30)")
+                        .HasColumnName("import_price");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext")
@@ -117,13 +123,13 @@ namespace booksaw.infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("page");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)")
-                        .HasColumnName("price");
-
                     b.Property<int>("PublisherId")
                         .HasColumnType("int")
                         .HasColumnName("publisher_id");
+
+                    b.Property<decimal>("SoldPrice")
+                        .HasColumnType("decimal(65,30)")
+                        .HasColumnName("sold_price");
 
                     b.HasKey("Id");
 
@@ -209,7 +215,7 @@ namespace booksaw.infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 12, 3, 14, 41, 9, 874, DateTimeKind.Local).AddTicks(4952))
+                        .HasDefaultValue(new DateTime(2023, 12, 3, 14, 30, 23, 428, DateTimeKind.Local).AddTicks(8365))
                         .HasColumnName("created_at");
 
                     b.Property<decimal>("TotalPrice")
@@ -285,7 +291,7 @@ namespace booksaw.infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 12, 3, 14, 41, 9, 874, DateTimeKind.Local).AddTicks(8856))
+                        .HasDefaultValue(new DateTime(2023, 12, 3, 14, 30, 23, 429, DateTimeKind.Local).AddTicks(1920))
                         .HasColumnName("created_at");
 
                     b.Property<int>("TotalPrice")

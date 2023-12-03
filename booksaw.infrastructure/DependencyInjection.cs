@@ -11,6 +11,7 @@ namespace booksaw.infrastructure
         {
             services.AddSingleton<DbConnector>();
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             return services;
         }
     }

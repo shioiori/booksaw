@@ -8,6 +8,7 @@ namespace booksaw.domain.Interfaces.Base
 {
     public interface IBaseRepository
     {
+        void BeginTransaction();
         int Commit();
         void Dispose();
     }

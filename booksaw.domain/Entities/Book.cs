@@ -18,18 +18,21 @@ namespace booksaw.domain.Entities
         public int AuthorId { get; set; }
         [Column("publisher_id")]
         public int PublisherId { get; set; }
+        [Column("category_id")]
+        public int CategoryId { get; set; }
         [Column("description")]
         public string Description { get; set; }
-        [Column("import_price")]
-        public decimal ImportPrice { get; set; }
-        [Column("sold_price")]
-        public decimal SoldPrice { get; set; }
+        [Column("price")]
+        public decimal Price { get; set; }
         [Column("image_url")]
         public string ImageUrl { get; set; }
         [Column("page")]
         public int Page { get; set; }
         public virtual Author Author { get; set; }
         public virtual Publisher Publisher { get; set; }
+        public virtual Category Category { get; set; }
         public virtual ICollection<BookClone> Clones { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<ReceiptDetail> ReceiptDetails { get; set; }
     }
 }

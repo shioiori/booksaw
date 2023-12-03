@@ -13,12 +13,20 @@ namespace booksaw.infrastructure.Repositories.Base
     public class BaseRepository : IBaseRepository
     {
         protected readonly IDbConnection _connection;
-        private IDbTransaction _transaction;
+        protected IDbTransaction _transaction;
         public BaseRepository(DbConnector dbConnection)
         {
             _connection = dbConnection.CreateConnection();
-            //_transaction = _connection.BeginTransaction();
         }
+
+        public void BeginTransaction()
+        {
+            if (_connection.State != ConnectionState.Open) {
+                _connection.Open();
+            }
+            _transaction = _connection.BeginTransaction();
+        }
+
         public int Commit()
         {
             try
@@ -34,7 +42,6 @@ namespace booksaw.infrastructure.Repositories.Base
             finally
             {
                 _transaction?.Dispose();
-                _transaction = _connection.BeginTransaction();
             }
         }
 

@@ -15,14 +15,26 @@ namespace booksaw.infrastructure.Repositories
 {
     public class BookRepository : BaseRepository, IBookRepository
     {
-        public BookRepository(DbConnector dbConnection) : base(dbConnection) {
+        public BookRepository(DbConnector dbConnector) : base(dbConnector) {
         }
         public async Task<IReadOnlyList<Book>> GetAllAsync()
         {
             try
             {
-                var query = @"SELECT * FROM books";
-                return (await _connection.QueryAsync<Book>(query)).ToList();
+                var query = @"SELECT * FROM books b
+                            INNER JOIN authors a ON b.author_id = a.id
+                            INNER JOIN publishers p ON b.publisher_id = p.id
+                            INNER JOIN categories c on b.category_id = c.id";
+                var books = await _connection.QueryAsync<Book, Author, Publisher, Category, Book>(query, (book, author, publisher, category) =>
+                {
+                    book.Author = author;
+                    book.Publisher = publisher;
+                    book.Category = category;
+                    return book;
+                },
+                splitOn: "id",
+                transaction: _transaction);
+                return books.ToList();
             }
             catch (Exception ex)
             {
@@ -34,8 +46,21 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = "SELECT * FROM books b WHERE b.id = @id";
-                return await _connection.QueryFirstOrDefaultAsync<Book>(query, new { id });
+                var query = @"SELECT * FROM books b
+                            INNER JOIN authors a ON b.author_id = a.id
+                            INNER JOIN publishers p ON b.publisher_id = p.id
+                            INNER JOIN categories c on b.category_id = c.id 
+                            WHERE b.id = @id";
+                var book = await _connection.QueryAsync<Book, Author, Publisher, Category, Book>(query, (book, author, publisher, category) =>
+                {
+                    book.Author = author;
+                    book.Publisher = publisher;
+                    book.Category = category;
+                    return book;
+                },
+                splitOn: "id",
+                param: new { id });
+                return book.First();
             }
             catch (Exception ex)
             {
@@ -47,11 +72,21 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = @"SELECT * FROM books b 
-                            JOIN books_categories bc on b.id = bc.book_id
-                            JOIN categories c on bc.category_id = c.id
+                var query = @"SELECT * FROM books b
+                            INNER JOIN authors a ON b.author_id = a.id
+                            INNER JOIN publishers p ON b.publisher_id = p.id
+                            INNER JOIN categories c on b.category_id = c.id 
                             WHERE c.id = @id";
-                return (await _connection.QueryAsync<Book>(query, new { id })).ToList();
+                var books = await _connection.QueryAsync<Book, Author, Publisher, Category, Book>(query, (book, author, publisher, category) =>
+                {
+                    book.Author = author;
+                    book.Publisher = publisher;
+                    book.Category = category;
+                    return book;
+                },
+                splitOn: "id",
+                param: new { id });
+                return books.ToList();
             }
             catch (Exception ex)
             {
@@ -63,8 +98,21 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = "SELECT * FROM books b WHERE b.author_id = @id";
-                return (await _connection.QueryAsync<Book>(query, new { id })).ToList();
+                var query = @"SELECT * FROM books b
+                            INNER JOIN authors a ON b.author_id = a.id
+                            INNER JOIN publishers p ON b.publisher_id = p.id
+                            INNER JOIN categories c on b.category_id = c.id 
+                            WHERE a.id = @id";
+                var books = await _connection.QueryAsync<Book, Author, Publisher, Category, Book>(query, (book, author, publisher, category) =>
+                {
+                    book.Author = author;
+                    book.Publisher = publisher;
+                    book.Category = category;
+                    return book;
+                },
+                splitOn: "id",
+                param: new { id });
+                return books.ToList();
             }
             catch (Exception ex)
             {
@@ -76,8 +124,21 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = "SELECT * FROM books b WHERE b.publisher_id = @id";
-                return (await _connection.QueryAsync<Book>(query, new { id })).ToList();
+                var query = @"SELECT * FROM books b
+                            INNER JOIN authors a ON b.author_id = a.id
+                            INNER JOIN publishers p ON b.publisher_id = p.id
+                            INNER JOIN categories c on b.category_id = c.id 
+                            WHERE p.id = @id";
+                var books = await _connection.QueryAsync<Book, Author, Publisher, Category, Book>(query, (book, author, publisher, category) =>
+                {
+                    book.Author = author;
+                    book.Publisher = publisher;
+                    book.Category = category;
+                    return book;
+                },
+                splitOn: "id",
+                param: new { id });
+                return books.ToList();
             }
             catch (Exception ex)
             {
@@ -89,10 +150,10 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = @"INSERT INTO books (name, author_id, publisher_id, description, import_price, sold_price, image_url, page) 
-                            VALUES (@Name, @AuthorId, @PublisherId, @Description, @ImportPrice, @SoldPrice, @ImageUrl, @Page);
+                var query = @"INSERT INTO books (name, author_id, publisher_id, category_id, description, price, image_url, page) 
+                            VALUES (@Name, @AuthorId, @PublisherId, @CategoryId, @Description, @Price, @ImageUrl, @Page);
                             SELECT LAST_INSERT_ID()";
-                var id = await _connection.QueryFirstAsync<int>(query, entity);
+                var id = await _connection.QueryFirstAsync<int>(query, entity, _transaction);
                 return await GetByIdAsync(id);
             }
             catch (Exception ex)
@@ -105,11 +166,11 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = @"UPDATE books SET name = @Name, author_id = @AuthorId, publisher_id = @PublisherId, 
-                            description = @Description, import_price = @ImportPrice, sold_price = @SoldPrice,
+                var query = @"UPDATE books SET name = @Name, author_id = @AuthorId, publisher_id = @PublisherId, category_id = @CategoryId
+                            description = @Description, price = @Price,
                             image_url = @ImageUrl, page_number = @PageNumber 
                             WHERE id = @Id";
-                await _connection.ExecuteAsync(query, entity);
+                await _connection.ExecuteAsync(query, entity, _transaction);
             }
             catch (Exception ex)
             {
@@ -122,7 +183,7 @@ namespace booksaw.infrastructure.Repositories
             try
             {
                 var query = "DELETE FROM books WHERE id = @id";
-                await _connection.ExecuteAsync(query, new { id = id });
+                await _connection.ExecuteAsync(query, new { id = id }, _transaction);
             }
             catch (Exception ex)
             {
