@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using booksaw.infrastructure.Data;
 
@@ -10,9 +11,10 @@ using booksaw.infrastructure.Data;
 namespace booksaw.infrastructure.Migrations
 {
     [DbContext(typeof(EFContext))]
-    partial class EFContextModelSnapshot : ModelSnapshot
+    [Migration("20231203095024_alterPublisher")]
+    partial class alterPublisher
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,7 +211,7 @@ namespace booksaw.infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 12, 3, 17, 56, 46, 627, DateTimeKind.Local).AddTicks(6063))
+                        .HasDefaultValue(new DateTime(2023, 12, 3, 16, 50, 24, 618, DateTimeKind.Local).AddTicks(5610))
                         .HasColumnName("created_at");
 
                     b.Property<decimal>("TotalPrice")
@@ -289,7 +291,7 @@ namespace booksaw.infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 12, 3, 17, 56, 46, 628, DateTimeKind.Local).AddTicks(131))
+                        .HasDefaultValue(new DateTime(2023, 12, 3, 16, 50, 24, 619, DateTimeKind.Local).AddTicks(2566))
                         .HasColumnName("created_at");
 
                     b.Property<int>("TotalPrice")

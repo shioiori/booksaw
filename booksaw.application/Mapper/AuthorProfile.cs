@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using booksaw.application.Authors.AddAuthor;
 using booksaw.application.Response;
 using booksaw.domain.Entities;
 using System;
@@ -13,6 +14,7 @@ namespace booksaw.application.Mapper
     {
         public AuthorProfile() { 
             CreateMap<Author, AuthorResponse>().ReverseMap();
+            CreateMap<Author, AddAuthorCommand>().ReverseMap();
         }
     }
 }

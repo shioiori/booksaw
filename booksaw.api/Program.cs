@@ -23,6 +23,16 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddApplication();
 builder.Services.AddInfrustructure();
 
+var cors = "cors";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(cors,
+                      policy =>
+                      {
+                          policy.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+                      });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,7 +45,9 @@ if (app.Environment.IsDevelopment())
 //app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
+app.UseCors(cors);
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

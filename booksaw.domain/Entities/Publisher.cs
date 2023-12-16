@@ -14,6 +14,8 @@ namespace booksaw.domain.Entities
         public int Id { get; set; }
         [Column("name")]
         public string Name { get; set; }
+        [Column("year")]
+        public int Year { get; set; }
         public virtual ICollection<Book> Books { get; set; }
     }
 }

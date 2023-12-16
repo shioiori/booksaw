@@ -21,7 +21,7 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = @"SELECT * FROM books b
+                var query = @"SELECT b.id, b.name, b.description, b.price, b.image_url as ImageUrl, b.page, a.*, p.*, c.* FROM books b
                             INNER JOIN authors a ON b.author_id = a.id
                             INNER JOIN publishers p ON b.publisher_id = p.id
                             INNER JOIN categories c on b.category_id = c.id";
@@ -32,8 +32,7 @@ namespace booksaw.infrastructure.Repositories
                     book.Category = category;
                     return book;
                 },
-                splitOn: "id",
-                transaction: _transaction);
+                splitOn: "id");
                 return books.ToList();
             }
             catch (Exception ex)
@@ -46,7 +45,7 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = @"SELECT * FROM books b
+                var query = @"SELECT b.id, b.name, b.description, b.price, b.image_url as ImageUrl, b.page, a.*, p.*, c.* FROM books b
                             INNER JOIN authors a ON b.author_id = a.id
                             INNER JOIN publishers p ON b.publisher_id = p.id
                             INNER JOIN categories c on b.category_id = c.id 
@@ -59,7 +58,8 @@ namespace booksaw.infrastructure.Repositories
                     return book;
                 },
                 splitOn: "id",
-                param: new { id });
+                param: new { id },
+                transaction: _transaction);
                 return book.First();
             }
             catch (Exception ex)
@@ -72,7 +72,7 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = @"SELECT * FROM books b
+                var query = @"SELECT b.id, b.name, b.description, b.price, b.image_url as ImageUrl, b.page, a.*, p.*, c.* FROM books b
                             INNER JOIN authors a ON b.author_id = a.id
                             INNER JOIN publishers p ON b.publisher_id = p.id
                             INNER JOIN categories c on b.category_id = c.id 
@@ -98,7 +98,7 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = @"SELECT * FROM books b
+                var query = @"SELECT b.id, b.name, b.description, b.price, b.image_url as ImageUrl, b.page, a.*, p.*, c.* FROM books b
                             INNER JOIN authors a ON b.author_id = a.id
                             INNER JOIN publishers p ON b.publisher_id = p.id
                             INNER JOIN categories c on b.category_id = c.id 
@@ -124,7 +124,7 @@ namespace booksaw.infrastructure.Repositories
         {
             try
             {
-                var query = @"SELECT * FROM books b
+                var query = @"SELECT b.id, b.name, b.description, b.price, b.image_url as ImageUrl, b.page, a.*, p.*, c.* FROM books b
                             INNER JOIN authors a ON b.author_id = a.id
                             INNER JOIN publishers p ON b.publisher_id = p.id
                             INNER JOIN categories c on b.category_id = c.id 

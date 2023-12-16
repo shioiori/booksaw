@@ -51,7 +51,7 @@ namespace booksaw.infrastructure.Data
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired();
                 entity.Property(e => e.Price).IsRequired();
-                entity.Property(e => e.ImageUrl).HasDefaultValue("https://i.imgur.com/YJlYDX0.png");
+                entity.Property(e => e.ImageUrl).HasDefaultValue("https://i.imgur.com/YJlYDX0.png").IsRequired();
                 entity.HasOne(e => e.Author)
                     .WithMany(p => p.Books)
                     .HasForeignKey(e => e.AuthorId);
